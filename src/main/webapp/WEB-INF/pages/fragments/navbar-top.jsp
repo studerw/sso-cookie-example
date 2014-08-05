@@ -23,8 +23,6 @@
             <ul class="nav navbar-nav">
                 <c:set var="appName1" value="${initParam['appName1']}" />
                 <li id="nav-docs"><a href="/${appName1}" target="_blank">${fn:toUpperCase(appName1)}</a></li>
-                <c:set var="appName2" value="${initParam['appName2']}" />
-                <li id="nav-tasks"><a href="/${appName2}" target="_blank">${fn:toUpperCase(appName2)}</a></li>
                 <li id="nav-users"><a href="${pageContext.request.contextPath}/documentation">Documentation</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
