@@ -1,0 +1,83 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    padding-top: 50px;
+    margin-bottom: 60px;
+
+}
+
+/*deprecated*/
+.start-template {
+    padding: 15px 15px;
+    /*   text-align: center;*/
+}
+
+.flash {
+    text-align: center;
+    padding: .3em .4em;
+    margin: 0 auto .5em;
+    clear: both;
+    max-width: 46.923em; /* 610/13 */
+    *max-width: 45.750em; /* 610/13.3333 - for IE */
+    border: thin solid #ff0;
+    background: #ffe;
+}
+
+.errorblock {
+    margin: 20px auto;
+    color: #E64B58;
+    background-color: #ffEEEE;
+    border: 1px solid #ff0000;
+    padding: 5px;
+    width: 400px;
+}
+
+.errorblock p {
+    color: #E64B58;
+    margin: 5px 2px;
+}
+
+#footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 40px;
+    background-color: #f5f5f5;
+}
+
+.alert-dropdown {
+    width: 500px;
+    padding: 0px;
+    margin: 0px;
+}
+
+.alert-dropdown li {
+    width: 500px;
+    padding: 0px;
+    margin: 0px;
+}
+
+.alert-dropdown-div {
+    margin: 0;
+    padding: 5px 30px 5px 5px;
+}
+
+/*img#process-diagram-img{*/
+/*width: 1024px;*/
+/*height: 768px;*/
+/*}*/
+
+img.proc-diagram {
+    padding: 20px;
+    border: 2px solid #021a40;
+}
+
+.scrollable-menu {
+    height: auto;
+    max-height: 800px;
+    overflow-x: hidden;
+}
