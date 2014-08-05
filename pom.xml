@@ -86,7 +86,7 @@
     </dependencies>
 
     <build>
-        <finalName>login</finalName>
+        <finalName>sso</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
