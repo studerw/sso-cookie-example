@@ -21,6 +21,31 @@
                 <p>You currently have ${fn:length(alerts)} alert(s) not yet acknowledged.</p>
             </div>
         </c:if>
+		
+        <c:if test="${error == true}">
+            <div class="errorblock">
+                <c:if test="${not empty errors}">
+                    <div class="errorBox">
+                        <c:forEach var="objError" items="${errors}">
+                            ${objError.field} - ${objError.defaultMessage}<br>
+                        </c:forEach>
+                    </div>
+                </c:if>
+                <c:if test="${not empty errorMsg}">
+                    <div class="errorBox">
+                        <p><strong>${errorMsg}</strong></p>
+                    </div>
+                </c:if>
+            </div>
+        </c:if>
+
+        <c:if test="${not empty msg}">
+            <div class="flash">
+                <p><strong>${msg}</strong></p>
+            </div>
+        </c:if>
+    </div>
+
         <div class="jumbotron">
             <c:set var="appTitle" value="${initParam['appName']}"/>
             <h2 style="color: ${initParam['appName']};">Single Sign On ${fn:toUpperCase(appTitle)} App</h2>

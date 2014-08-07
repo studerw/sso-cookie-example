@@ -15,7 +15,7 @@ Login as any user  (this login step would be customized based on what is needed 
 
 ----
 
-The idea is as follows:
+* Multiple Apps using Single Sign-On
 
 Two applications: 'blue' and 'red'. Deploy both, either on the same host or behind a proxy.
 Login to either one of the applications, and now you are logged into the other(s). Logout of either app, and you will be logged out of the other(s).

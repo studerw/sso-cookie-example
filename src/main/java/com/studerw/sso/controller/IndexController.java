@@ -44,7 +44,7 @@ public class IndexController {
         if (StringUtils.isNotBlank(sessionName) && StringUtils.isNotBlank(sessionVal)) {
             log.debug("adding session: " + sessionName + " = " + sessionVal);
             WebUtils.setSessionAttribute(request, sessionName.trim(), sessionVal.trim());
-            redirectAttributes.addFlashAttribute("msg", "Session Attributes Added Successfully");
+            redirectAttributes.addFlashAttribute("msg", "Session Attribute Added Successfully");
         }
         return "redirect:/index";
     }
