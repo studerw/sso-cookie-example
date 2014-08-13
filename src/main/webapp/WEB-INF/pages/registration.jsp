@@ -30,7 +30,7 @@
     <div class="start-template" style="width: 500px; margin: 10px auto;">
         <c:if test="${error == true}">
             <div class="errorblock">
-                <p>Your login attempt was not successful.</p>
+                <p>Your Registration was not successful</p>
 
                 <p> Cause: ${errorMsg}</p>
             </div>
@@ -43,15 +43,29 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">SSO Login</h3>
+                <h3 class="panel-title">SSO Registration</h3>
             </div>
             <div class="panel-body">
-                <form style="margin: 20px;" class="form-horizontal" role="form" action="${pageContext.request.contextPath}/j_spring_security_check" method="post">
+                <form style="margin: 20px;" class="form-horizontal" role="form" action="${pageContext.request.contextPath}/registration" method="post">
                     <div class="form-group">
-                        <label for="j_username" class="col-sm-2 control-label">User</label>
+                        <label for="username" class="col-sm-2 control-label">User</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="j_username" name="j_username" required
+                            <input type="text" class="form-control" id="username" name="username" required
                                    placeholder="User Name" autofocus>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstname" class="col-sm-2 control-label">First Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="firstname" name="firstname" required
+                                   placeholder="First Name" autofocus>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname" class="col-sm-2 control-label">Last Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="lastname" name="lastname" required
+                                   placeholder="Last Name" >
                         </div>
                     </div>
 
@@ -71,12 +85,11 @@
                         <%--</div>--%>
                     <%--</div>--%>
 
-                    <button class="btn btn-primary btn-default pull-right" name="submit" type="submit">Sign in</button>
+                    <button class="btn btn-primary btn-default pull-right" name="submit" type="submit">Register</button>
                 </form>
             </div>
 
         </div>
-        <p>Use any user name - this would be replaced by the environment security provider in the real world.</p>
     </div>
 </div>
 

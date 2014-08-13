@@ -8,13 +8,13 @@ import java.util.Arrays;
 import java.util.UUID;
 
 /**
- * User: studerw
+ * user: studerw
  * Date: 8/4/14
  */
 public class SSOCookie {
     private static final Logger log = Logger.getLogger(SSOCookie.class);
     public static final String NAME = "com.studerw.SSO_COOKIE";
-    public static final String BANNER = "CHROME_BANNER";
+    public static final String BANNER = "SSO_BANNER";
 
     public static Cookie create(String userId, HttpServletRequest request) {
         String ssoValue = UUID.randomUUID().toString() + ":" + userId.trim();

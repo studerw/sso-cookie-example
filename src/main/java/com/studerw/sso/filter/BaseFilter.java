@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * User: studerw
+ * user: studerw
  * Date: 8/3/14
  */
 public abstract class BaseFilter implements Filter {

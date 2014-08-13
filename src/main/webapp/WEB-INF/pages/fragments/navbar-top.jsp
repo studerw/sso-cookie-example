@@ -69,9 +69,9 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">${userId} <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">${userName} <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="${pageContext.request.contextPath}/logout">Log Out</a></li>
+                        <li><a href="${pageContext.request.contextPath}/j_spring_security_logout">Log Out</a></li>
                     </ul>
                 </li>
             </ul>

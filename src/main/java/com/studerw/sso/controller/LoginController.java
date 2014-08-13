@@ -22,31 +22,28 @@ public class LoginController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String get(ModelMap model, HttpServletRequest request, HttpServletResponse response) {
-        if (WebUtils.getCookie(request, SSOCookie.NAME) != null) {
-            return "redirect:/index";
-        }
         return "login";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public String post(@RequestParam(value = "j_username") String jUsername,
-                       HttpServletRequest request,
-                       HttpServletResponse response,
-                       final RedirectAttributes redirectAttributes) {
-
-        //if the SSO cookie exists, we probably didn't get sent by the filter, so just redirect to index
-        if (WebUtils.getCookie(request, SSOCookie.NAME) != null) {
-            return "redirect:/index";
-        }
-        if (StringUtils.isBlank(jUsername)){
-            redirectAttributes.addFlashAttribute("errorMsg", "Invalid User");
-            redirectAttributes.addFlashAttribute("error", Boolean.TRUE);
-            return "redirect:/login";
-        }
-        Cookie ssoCookie = SSOCookie.create(jUsername, request);
-        //Create the Cookie object
-        WebUtils.setSessionAttribute(request, SSOCookie.NAME, SSOCookie.getId(ssoCookie));
-        response.addCookie(ssoCookie);
-        return "redirect:/index";
-    }
+//    @RequestMapping(method = RequestMethod.POST)
+//    public String post(@RequestParam(value = "j_username") String jUsername,
+//                       HttpServletRequest request,
+//                       HttpServletResponse response,
+//                       final RedirectAttributes redirectAttributes) {
+//
+//        //if the SSO cookie exists, we probably didn't get sent by the filter, so just redirect to index
+//        if (WebUtils.getCookie(request, SSOCookie.NAME) != null) {
+//            return "redirect:/index";
+//        }
+//        if (StringUtils.isBlank(jUsername)){
+//            redirectAttributes.addFlashAttribute("errorMsg", "Invalid user");
+//            redirectAttributes.addFlashAttribute("error", Boolean.TRUE);
+//            return "redirect:/login";
+//        }
+//        Cookie ssoCookie = SSOCookie.create(jUsername, request);
+//        //Create the Cookie object
+//        WebUtils.setSessionAttribute(request, SSOCookie.NAME, SSOCookie.getId(ssoCookie));
+//        response.addCookie(ssoCookie);
+//        return "redirect:/index";
+//    }
 }

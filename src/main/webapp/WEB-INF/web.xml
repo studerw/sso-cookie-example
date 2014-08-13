@@ -8,16 +8,41 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:spring/applicationContext.xml</param-value>
+        <param-value>classpath:spring/applicationContext.xml classpath:spring/spring-security.xml</param-value>
     </context-param>
     <context-param>
         <param-name>appName</param-name>
-        <param-value>blue</param-value>
+        <param-value>red</param-value>
     </context-param>
     <context-param>
         <param-name>appName1</param-name>
-        <param-value>red</param-value>
+        <param-value>blue</param-value>
     </context-param>
+
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!--<filter>-->
+        <!--<filter-name>bannerFilter</filter-name>-->
+        <!--<filter-class>com.studerw.sso.filter.BannerFilter</filter-class>-->
+    <!--</filter>-->
+
+    <!--<filter-mapping>-->
+        <!--<filter-name>bannerFilter</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+
+    <!-- needed for concurrent session control -->
+    <listener>
+        <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+    </listener>
 
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -37,6 +62,7 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <!--
     <filter>
         <filter-name>DomainCookieFilter</filter-name>
         <filter-class>com.studerw.sso.filter.DomainCookieFilter</filter-class>
@@ -54,7 +80,7 @@
         <filter-name>BannerFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
+    -->
     <session-config>
         <tracking-mode>COOKIE</tracking-mode>
     </session-config>

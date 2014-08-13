@@ -10,18 +10,6 @@
         </layout>
     </appender>
 
-    <appender name="LOGFILE" class="org.apache.log4j.RollingFileAppender">
-        <!-- <param name="Threshold" value="INFO" /> -->
-        <!-- <param name="Append" value="false" /> -->
-        <param name="MaxBackupIndex" value="5"/>
-        <param name="MaxFileSize" value="10MB"/>
-        <param name="File" value="../standalone/log/tcop.log"/>
-        <layout class="org.apache.log4j.PatternLayout">
-            <!-- <param name="ConversionPattern" value="%-4r [%C.%M - %t] %-5p [%x] - %m%n" /> -->
-            <param name="ConversionPattern" value="%-5p %d [%t] %c: %m%n"/>
-        </layout>
-    </appender>
-
     <logger name="com.studerw.sso">
         <level value="DEBUG"/>
     </logger>
@@ -32,7 +20,7 @@
     </logger>
 
     <logger name="org.springframework.security">
-        <level value="INFO"/>
+        <level value="WARN"/>
     </logger>
 
     <root>

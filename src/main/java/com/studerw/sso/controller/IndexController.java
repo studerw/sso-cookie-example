@@ -2,6 +2,8 @@ package com.studerw.sso.controller;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +22,8 @@ public class IndexController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String index(ModelMap model, HttpServletRequest request) {
-        model.addAttribute("userId", request.getRemoteUser());
+//        model.addAttribute("userName", request.getRemoteUser());
+        model.addAttribute("userName", SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("message", "index");
         int numCookies = 0;
         Cookie[] myCookies = request.getCookies();

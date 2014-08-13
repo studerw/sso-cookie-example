@@ -1,0 +1,46 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+    <debug/>
+
+    <beans:bean id="ssoCookieFilter" class="com.studerw.sso.filter.DomainCookieFilter"/>
+    <beans:bean id="ssoBannerFilter" class="com.studerw.sso.filter.BannerFilter"/>
+    <beans:bean id="ssoAuthenticationProvider" class="com.studerw.sso.SSOAuthenticationProvider"/>
+    <beans:bean id="successHandler" class="com.studerw.sso.SSOCookieAuthenticationSuccessHandler"/>
+
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider ref="ssoAuthenticationProvider"/>
+    </authentication-manager>
+
+    <beans:bean id="logoutSuccessHandler" class="com.studerw.sso.SSOCookieLogoutSuccessHandler">
+        <beans:constructor-arg value="/logout"/>
+    </beans:bean>
+
+    <http pattern="/resources/**" security="none"/>
+    <http pattern="/login" security="none"/>
+    <http pattern="/logout" security="none"/>
+    <http pattern="/registration" security="none"/>
+    <http pattern="/banner" security="none"/>
+
+
+    <http auto-config="false" use-expressions="true" disable-url-rewriting="true" servlet-api-provision="true">
+        <session-management session-fixation-protection="migrateSession">
+            <concurrency-control max-sessions="2" error-if-maximum-exceeded="true"/>
+        </session-management>
+        <custom-filter position="PRE_AUTH_FILTER" ref="ssoCookieFilter"/>
+        <custom-filter position="LAST" ref="ssoBannerFilter"/>
+        <intercept-url pattern="/**" access="hasAnyRole('user')"/>
+
+        <form-login login-page="/login" authentication-failure-url="/registration" authentication-success-handler-ref="successHandler"/>
+        <logout success-handler-ref="logoutSuccessHandler"/>
+
+    </http>
+
+
+
+</beans:beans>

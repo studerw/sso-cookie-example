@@ -19,14 +19,15 @@ public class LogoutController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String get(ModelMap model, HttpServletRequest request, HttpServletResponse response) {
-        log.info("logging out of the app");
-        Cookie ssoCookie = WebUtils.getCookie(request, SSOCookie.NAME);
-        if (ssoCookie != null){
-            SSOCookie.destroyCookie(ssoCookie, request);
-            response.addCookie(ssoCookie);
-        }
-        request.getSession().invalidate();
+//        log.info("logging out of the app");
+//        Cookie ssoCookie = WebUtils.getCookie(request, SSOCookie.NAME);
+//        if (ssoCookie != null){
+//            SSOCookie.destroyCookie(ssoCookie, request);
+//            response.addCookie(ssoCookie);
+//        }
+//        request.getSession().invalidate();
         return "logout";
     }
 
 }
+

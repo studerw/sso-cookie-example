@@ -1,9 +1,16 @@
 package com.studerw.sso.filter;
 
+import com.studerw.sso.SSOAuthenticationProvider;
 import com.studerw.sso.SSOCookie;
+import com.studerw.sso.user.User;
+import com.studerw.sso.user.UserService;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.*;
@@ -13,47 +20,83 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * User: studerw
+ * user: studerw
  * Date: 7/26/14
  */
-public class DomainCookieFilter extends BaseFilter {
+public class DomainCookieFilter extends GenericFilterBean {
     private static final Logger log = Logger.getLogger(DomainCookieFilter.class);
     private FilterConfig filterConfig = null;
     public static final String LOGIN_PATH = "/login";
     public static final String AJAX_HEADER = "X-REQUESTED-WITH";
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        log.debug("DomainCookieFilter init...");
-        this.filterConfig = filterConfig;
-    }
+    @Autowired
+    UserService userService;
+
 
     @Override
-    public void destroy() {
-        this.filterConfig = null;
-    }
-
-    @Override
-    public void afterIgnore(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+        Cookie ssoCookie = WebUtils.getCookie(httpServletRequest, SSOCookie.NAME);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.debug("sso cookie: " + ssoCookie);
+        log.debug("authentication: " + authentication);
 
-        Cookie ssoCookie = checkSSOCookie(httpServletRequest);
-        if (ssoCookie == null) {
-            HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+        if (authentication == null && ssoCookie == null && isAjax(httpServletRequest)){
+            httpServletResponse.sendError(419, "SSOCookie Missing - Ajax Request");
+            return;
+        }
+        if (authentication != null && ssoCookie == null) {
+            SecurityContextHolder.clearContext();
             if (isAjax(httpServletRequest)) {
                 httpServletResponse.sendError(419, "SSOCookie Missing - Ajax Request");
                 return;
             }
-            else {
-                String redirect = httpServletRequest.getContextPath() + LOGIN_PATH;
-                log.info("No SSOCookie - redirecting to: " + redirect);
-                httpServletResponse.sendRedirect(redirect);
-                return;
+        } else if (ssoCookie != null && authentication != null && authentication.isAuthenticated()) {
+            String ssoSessionVal = (String) WebUtils.getSessionAttribute(httpServletRequest, SSOCookie.NAME);
+            String ssoCookieVal = SSOCookie.getId(ssoCookie);
+
+            if (!ObjectUtils.equals(ssoSessionVal, ssoCookieVal)) {
+                log.info("Current Session does not match SSO Cookie - invalidating app session");
+                SecurityContextHolder.clearContext();
+                httpServletRequest.getSession().invalidate();
+                WebUtils.setSessionAttribute(httpServletRequest, SSOCookie.NAME, ssoCookieVal);
+            }
+
+        } else if (ssoCookie != null && (authentication == null || !authentication.isAuthenticated())) {
+            String username = SSOCookie.getUser(ssoCookie);
+            try {
+                User user = this.userService.getByUserName(username);
+                if (user == null) {
+                    if (isAjax(httpServletRequest)) {
+                        httpServletResponse.sendError(419, "SSOCookie Missing - Ajax Request");
+                        return;
+                    } else {
+                        String redirect = httpServletRequest.getContextPath() + "/j_spring_security_logout";
+                        httpServletResponse.sendRedirect(redirect);
+                        return;
+                    }
+                }
+                SSOAuthenticationProvider.BaseAuthentication auth = new SSOAuthenticationProvider.BaseAuthentication(user);
+                SecurityContextHolder.getContext().setAuthentication(auth);
+                WebUtils.setSessionAttribute(httpServletRequest, SSOCookie.NAME, SSOCookie.getId(ssoCookie));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
-        HttpServletRequest remoteUserReq = new RemoteUserRequestWrapper(httpServletRequest);
-        chain.doFilter(remoteUserReq, response);
+
+
+//        Cookie ssoCookie = checkSSOCookie(httpServletRequest);
+//        if (ssoCookie == null) {
+//            HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+//            if (isAjax(httpServletRequest)) {
+//                httpServletResponse.sendError(419, "SSOCookie Missing - Ajax Request");
+//                return;
+//            }
+//        }
+        chain.doFilter(request, response);
     }
+
 
     /**
      * @param request
@@ -63,6 +106,7 @@ public class DomainCookieFilter extends BaseFilter {
     protected Cookie checkSSOCookie(HttpServletRequest request) {
         Cookie ssoCookie = WebUtils.getCookie(request, SSOCookie.NAME);
         if (ssoCookie == null) {
+            SecurityContextHolder.clearContext();
             request.getSession().invalidate();
         }
 
@@ -73,6 +117,7 @@ public class DomainCookieFilter extends BaseFilter {
             String ssoCookieVal = SSOCookie.getId(ssoCookie);
             if (!ObjectUtils.equals(ssoSessionVal, ssoCookieVal)) {
                 log.info("Current Session does not match SSO Cookie - invalidating app session");
+                SecurityContextHolder.clearContext();
                 request.getSession().invalidate();
                 WebUtils.setSessionAttribute(request, SSOCookie.NAME, ssoCookieVal);
             }
@@ -90,5 +135,4 @@ public class DomainCookieFilter extends BaseFilter {
         String xRequestHdr = request.getHeader(AJAX_HEADER);
         return StringUtils.equalsIgnoreCase("XMLHttpRequest", xRequestHdr);
     }
-
 }

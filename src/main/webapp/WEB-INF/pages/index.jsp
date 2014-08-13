@@ -51,10 +51,6 @@
             <h2 style="color: ${initParam['appName']};">Single Sign On ${fn:toUpperCase(appTitle)} App</h2>
 
             <p>IP address: ${pageContext.request.remoteAddr}</p>
-            <%--<p>The application uses the--%>
-            <%--<a href="https://git.lab76.org/chrome-developers/chrome-common-services/wikis/alert-api">Chrome Alert--%>
-            <%--API</a>--%>
-            <%--</p>--%>
 
             <p><a class="btn btn-lg btn-success" id="ajaxPing" role="button">Ajax Ping</a></p>
         </div>

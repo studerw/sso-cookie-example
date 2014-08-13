@@ -22,7 +22,7 @@ Then in Eclipse:
         port: 4000
         allow termination of remote: checked
 
-    Hit Apply and close or debug to start (the next time you won't need to recreate the configuration - just go to Run -> Debug Configurations -> Remote Java App -> tcop-cloud remote debug
+    Hit Apply and close or debug to start (the next time you won't need to recreate the configuration - just go to Run -> Debug Configurations -> Remote Java App -> remote debug
 
     Add Breakpoints in any code as you would in non-webapp or JUnit test.
 
